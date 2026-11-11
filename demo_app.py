@@ -57,6 +57,10 @@ HTML_PAGE = r'''<!DOCTYPE html>
         }
     </script>
     <style>
+        select, select option {
+            background-color: #0f172a !important;
+            color: #f8fafc !important;
+        }
         .prose pre { background: #0b0f19; border: 1px solid #334155; border-radius: 8px; padding: 12px; }
         .prose a { color: #818cf8; text-decoration: underline; }
         .prose ul { list-style-type: disc; padding-left: 20px; }
@@ -136,21 +140,55 @@ HTML_PAGE = r'''<!DOCTYPE html>
                         <textarea id="prompt-input" rows="4" class="w-full bg-slate-900 border border-borderbg rounded-xl p-3 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" placeholder="Nhập câu hỏi điều tra trạng thái..."></textarea>
                     </div>
 
-                    <!-- Options -->
-                    <div class="grid grid-cols-2 gap-3 mt-4 pt-4 border-t border-slate-700/60">
-                        <div>
-                            <label class="text-[11px] font-semibold text-slate-400 block mb-1">DỮ LIỆU STATUS:</label>
-                            <select id="mode-select" class="w-full bg-slate-900 border border-borderbg rounded-lg px-2.5 py-1.5 text-xs text-slate-200">
-                                <option value="snapshot" selected>Snapshot (Cố định 2026)</option>
-                                <option value="live">Live (Gọi API thực tế)</option>
-                            </select>
+                    <!-- AI Smart Auto-Detect Routing Card -->
+                    <div class="mt-4 pt-3 border-t border-slate-700/60">
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900/90 border border-slate-800 shadow-inner">
+                            <div class="flex items-center gap-2.5">
+                                <span class="relative flex h-2.5 w-2.5">
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                                </span>
+                                <div>
+                                    <div class="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
+                                        <span>AI Tự Động Định Tuyến</span>
+                                        <span class="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-1.5 py-0.5 rounded font-mono">Auto-Detect</span>
+                                    </div>
+                                    <div class="text-[11px] text-slate-400 mt-0.5">
+                                        Tự chọn bộ Tool phù hợp & Nguồn dữ liệu theo nội dung câu hỏi
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Toggle Button for Advanced Options -->
+                            <button type="button" onclick="toggleAdvancedSettings()" class="text-[11px] text-slate-300 hover:text-white transition flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700">
+                                <i class="fa-solid fa-sliders text-[10px] text-indigo-400"></i>
+                                <span>Tùy chỉnh</span>
+                            </button>
                         </div>
-                        <div>
-                            <label class="text-[11px] font-semibold text-slate-400 block mb-1">BỘ CÔNG CỤ (TOOLS):</label>
-                            <select id="tools-select" class="w-full bg-slate-900 border border-borderbg rounded-lg px-2.5 py-1.5 text-xs text-slate-200">
-                                <option value="main" selected>Bài chính (GitHub & Cloudflare)</option>
-                                <option value="bonus">Bonus (5 Providers & Phân trang)</option>
-                            </select>
+
+                        <!-- Collapsible Advanced Settings (Mặc định ẩn) -->
+                        <div id="advanced-settings" class="hidden mt-3 p-3 bg-slate-950/80 border border-slate-800 rounded-xl space-y-3">
+                            <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider flex items-center justify-between">
+                                <span>⚙️ Cấu hình thủ công (Tùy chọn):</span>
+                                <span class="text-[10px] text-slate-500 font-normal">Mặc định: Tự động</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="text-[11px] text-slate-300 block mb-1 font-medium">DỮ LIỆU STATUS:</label>
+                                    <select id="mode-select" class="w-full bg-[#0f172a] text-slate-100 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:ring-1 focus:ring-indigo-500 focus:outline-none" style="background-color: #0f172a !important; color: #ffffff !important;">
+                                        <option value="auto" selected style="background-color: #0f172a; color: #ffffff;">✨ Tự động (Khuyên dùng)</option>
+                                        <option value="snapshot" style="background-color: #0f172a; color: #ffffff;">Snapshot (Cố định 2026)</option>
+                                        <option value="live" style="background-color: #0f172a; color: #ffffff;">Live (Gọi API thực tế)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-[11px] text-slate-300 block mb-1 font-medium">BỘ CÔNG CỤ (TOOLS):</label>
+                                    <select id="tools-select" class="w-full bg-[#0f172a] text-slate-100 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:ring-1 focus:ring-indigo-500 focus:outline-none" style="background-color: #0f172a !important; color: #ffffff !important;">
+                                        <option value="auto" selected style="background-color: #0f172a; color: #ffffff;">✨ Tự động (Theo câu hỏi)</option>
+                                        <option value="main" style="background-color: #0f172a; color: #ffffff;">Bài chính (GitHub & Cloudflare)</option>
+                                        <option value="bonus" style="background-color: #0f172a; color: #ffffff;">Bonus (5 Nền tảng mở rộng)</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -285,13 +323,17 @@ HTML_PAGE = r'''<!DOCTYPE html>
             3: "Tổng hợp trạng thái GitHub, Cloudflare, Vercel, npm và DigitalOcean: mỗi nhà cung cấp đang báo gì trong snapshot, thời điểm dữ liệu, và nguồn? Đừng suy ra nguyên nhân liên quan giữa các bên."
         };
 
+        function toggleAdvancedSettings() {
+            const el = document.getElementById('advanced-settings');
+            if (el) el.classList.toggle('hidden');
+        }
+
         function setPrompt(id) {
             document.getElementById('prompt-input').value = PRESETS[id];
-            if (id === 3) {
-                document.getElementById('tools-select').value = 'bonus';
-            } else {
-                document.getElementById('tools-select').value = 'main';
-            }
+            const selTools = document.getElementById('tools-select');
+            const selMode = document.getElementById('mode-select');
+            if (selTools) selTools.value = 'auto';
+            if (selMode) selMode.value = 'auto';
         }
 
         function switchTab(tab) {
@@ -334,14 +376,17 @@ HTML_PAGE = r'''<!DOCTYPE html>
             ansBox.innerHTML = '<p class="text-slate-400 italic flex items-center gap-2"><i class="fa-solid fa-circle-notch fa-spin text-indigo-400"></i> Model đang phân tích câu hỏi và điều phối tools...</p>';
             traceBox.innerHTML = '<div class="text-center py-6 text-slate-400 text-xs flex items-center justify-center gap-2"><i class="fa-solid fa-gear fa-spin text-indigo-400 text-base"></i> Đang khởi tạo context và kết nối provider...</div>';
 
+            const modeVal = document.getElementById('mode-select') ? document.getElementById('mode-select').value : 'auto';
+            const toolsVal = document.getElementById('tools-select') ? document.getElementById('tools-select').value : 'auto';
+
             try {
                 const response = await fetch('/api/run', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         question: prompt,
-                        mode: document.getElementById('mode-select').value,
-                        tools: document.getElementById('tools-select').value
+                        mode: modeVal,
+                        tools: toolsVal
                     })
                 });
 
@@ -349,7 +394,9 @@ HTML_PAGE = r'''<!DOCTYPE html>
 
                 // Render Badge
                 if (data.status === 'completed') {
+                    const routingInfo = data.detected_info ? ` (${data.detected_info})` : '';
                     badge.className = "text-xs px-2.5 py-1 rounded-full font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1.5";
+                    badge.innerHTML = `<i class="fa-solid fa-check text-[10px]"></i> Hoàn tất${routingInfo}`;
                     badge.innerHTML = '<i class="fa-solid fa-check text-[10px]"></i> Hoàn tất (Completed)';
                 } else {
                     badge.className = "text-xs px-2.5 py-1 rounded-full font-medium bg-rose-500/20 text-rose-300 border border-rose-500/30 flex items-center gap-1.5";
@@ -527,8 +574,23 @@ class DemoHandler(http.server.BaseHTTPRequestHandler):
             req_data = json.loads(body.decode('utf-8'))
 
             question = req_data.get('question', '')
-            mode = req_data.get('mode', 'snapshot')
-            tool_type = req_data.get('tools', 'main')
+            mode = req_data.get('mode', 'auto')
+            tool_type = req_data.get('tools', 'auto')
+
+            q_lower = question.lower()
+            # Tự động phát hiện chế độ Live nếu câu hỏi có từ khóa thời gian thực / hôm nay
+            if mode == 'auto':
+                if any(kw in q_lower for kw in ['hôm nay', 'hiện tại', 'bây giờ', 'live', 'realtime', 'thời gian thực', 'ngay lúc này', 'today', 'right now']):
+                    mode = 'live'
+                else:
+                    mode = 'snapshot'
+
+            # Tự động phát hiện bộ công cụ phù hợp
+            if tool_type == 'auto':
+                if any(p in q_lower for p in ['vercel', 'npm', 'digitalocean', '5 nhà', '5 nền tảng', 'bonus']):
+                    tool_type = 'bonus'
+                else:
+                    tool_type = 'main'
 
             provider_name = os.getenv('PROVIDER', 'gemini')
             model_name = os.getenv('MODEL', 'gemini-flash-lite-latest')
@@ -543,6 +605,9 @@ class DemoHandler(http.server.BaseHTTPRequestHandler):
                     max_steps = 8
 
                 result = run_agent(question, provider, tools, max_steps=max_steps)
+                mode_label = 'Live API' if mode == 'live' else 'Snapshot 2026'
+                tool_label = 'Bonus 5 nền tảng' if tool_type == 'bonus' else 'Bộ 2 Tools chính'
+                result['detected_info'] = f"{mode_label} · {tool_label}"
             except Exception as exc:
                 result = {
                     'status': 'error',
