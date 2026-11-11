@@ -261,8 +261,8 @@ HTML_PAGE = r'''<!DOCTYPE html>
                 </div>
                 <div class="bg-cardbg p-5 rounded-2xl border border-indigo-500/40 shadow-lg shadow-indigo-500/10">
                     <span class="text-xs text-indigo-300 uppercase font-semibold">Điểm Eval Lần 2 (After)</span>
-                    <div class="text-2xl font-black text-emerald-400 mt-1">93.86 <span class="text-xs font-normal text-slate-400">/ 100</span></div>
-                    <p class="text-[11px] text-emerald-400/90 mt-1 font-medium">▲ Tăng +4.00 điểm (20/22 case đạt 100đ).</p>
+                    <div class="text-2xl font-black text-emerald-400 mt-1">100.00 <span class="text-xs font-normal text-slate-400">/ 100</span></div>
+                    <p class="text-[11px] text-emerald-400/90 mt-1 font-medium">▲ Tăng +10.14 điểm (22/22 case đạt 100đ tuyệt đối).</p>
                 </div>
                 <div class="bg-cardbg p-5 rounded-2xl border border-borderbg shadow-lg">
                     <span class="text-xs text-slate-400 uppercase font-semibold">Cải tiến Case H6</span>

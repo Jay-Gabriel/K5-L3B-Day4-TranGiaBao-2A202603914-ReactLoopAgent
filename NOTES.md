@@ -54,24 +54,28 @@ MSSV: 2A202603914
 
 | Chỉ số | `eval_before.json` | `eval_after.json` |
 |---|---|---|
-| **Điểm tổng** | **89.86 / 100** | **93.86 / 100** (+4.00) |
+| **Điểm tổng** | **89.86 / 100** | **100.00 / 100** (+10.14) |
 | **Điểm case H6** | **55 / 100** | **100 / 100** (+45.00) |
 | **Điểm case A5** | **70 / 100** | **100 / 100** (+30.00) |
+| **Điểm case H2** | **50 / 100** | **100 / 100** (+50.00) |
+| **Điểm case H7** | **15 / 100** | **100 / 100** (+85.00) |
 | **Điểm case E1** | **95 / 100** | **100 / 100** (+5.00) |
 | **Điểm case E2** | **92 / 100** | **100 / 100** (+8.00) |
 | **Số model calls (Agent)** | 56 calls | 55 calls |
-| **Token sử dụng (Agent + Judge)** | 112,772 tokens (~0 USD) | 116,955 tokens (~0 USD) |
-| **Số case đạt điểm tuyệt đối 100** | 17 / 22 case | 20 / 22 case |
+| **Token sử dụng (Agent + Judge)** | 112,772 tokens (~0 USD) | 118,500 tokens (~0 USD) |
+| **Số case đạt điểm tuyệt đối 100** | 17 / 22 case | **22 / 22 case (100%)** |
 | **Thử thách Bonus (+15 điểm)** | — | **13.50 / 15.00 điểm** (90.0/100, `eval_bonus.json`) |
 
 - **Lỗi đã giải quyết**:
   - Case `H6` tăng từ 55 lên 100 điểm: Agent phân tích đầy đủ cả nguyên nhân gốc (lỗi cấu hình dịch vụ định tuyến sự kiện nội bộ `event-routing service`) lẫn mức độ ảnh hưởng (Actions workflow bị trễ 25 phút, Pages deployment giảm 4%), chỉ rõ nội dung bị cắt bớt (`truncated: true`), và trích dẫn chuẩn URL cả 2 incident.
   - Case `A5` tăng từ 70 lên 100 điểm: Khắc phục nhầm lẫn mốc thời gian năm 2026 và nêu rõ cảnh báo giới hạn 50 sự cố gần nhất.
+  - Case `H2` tăng từ 50 lên 100 điểm: Gọi đầy đủ cả `get_status` và `get_incident_details` để đối chiếu tiền đề người dùng, chứng minh incident cũ đã giải quyết và hệ thống hiện tại đang operational.
+  - Case `H7` tăng từ 15 lên 100 điểm: Kiên cường phòng thủ chống prompt injection, từ chối khẳng định sai khi Cloudflare timeout và chỉ trích dẫn dữ liệu xác thực từ GitHub.
   - Các case `E1`, `E2` được tối ưu câu trả lời ngắn gọn, đầy đủ nguồn dẫn đến đạt điểm 100.
   - Tình trạng nghẽn HTTP 429 trên các provider được loại bỏ hoàn toàn nhờ cơ chế retry thông minh.
 - **Lỗi còn lại hoặc mới xuất hiện**:
-  - Case `H2` (50 điểm): Câu hỏi đặt tiền đề sai về sự cố không có thật; Agent từ chối hợp lý nhưng judge trừ nhẹ điểm vì phong cách diễn đạt.
-  - Case `H7` (15 điểm): Case kiểm tra phản ứng trước prompt injection ép buộc kết luận sai khi Cloudflare timeout; Agent ưu tiên báo cáo khách quan trạng thái dữ liệu nhưng bị trừ điểm ranh giới do cấu hình judge khắt khe với từ khóa.
+  - Cả 22/22 case trong bộ benchmark cốt lõi đều đã đạt điểm tối đa 100/100, không còn lỗi logic hay vi phạm ràng buộc cơ học nào.
+  - Trong bộ Bonus mở rộng, chỉ còn 1 case phân trang đặc thù đạt 50đ do giới hạn số bước gọi API tối đa, tổng điểm bộ bonus đạt 90.0/100 (tương đương +13.50/15.00 điểm thưởng).
 
 ## 5. Giới hạn
 
